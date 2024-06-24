@@ -119,13 +119,22 @@ end
 	however you want.
 ]]
 
+---@class BatonPlayer
 local Player = {}
 Player.__index = Player
+
+---@class BatonConfig config used to configure [player](lua://BatonPlayer)
+---@field controls {string : string[]}
+---@field pairs {string : string[]}?
+---@field joystick love.joystick?
+---@field deadzone number?
+---@field squareDeadzone number | boolean | nil
 
 -- internal functions --
 
 -- sets the player's config to a user-defined config table
 -- and sets some defaults if they're not already defined
+---@param config BatonConfig
 function Player:_loadConfig(config)
 	if not config then
 		error('No config table provided', 4)
@@ -173,6 +182,7 @@ function Player:_initPairs()
 	end
 end
 
+---@param config BatonConfig
 function Player:_init(config)
 	self:_loadConfig(config)
 	self:_initControls()
@@ -365,6 +375,7 @@ end
 -- main functions --
 
 -- creates a new player with the user-provided config table
+---@param config BatonConfig
 function baton.new(config)
 	local player = setmetatable({}, Player)
 	player:_init(config)
